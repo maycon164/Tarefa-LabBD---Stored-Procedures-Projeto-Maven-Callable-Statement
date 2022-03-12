@@ -1,5 +1,7 @@
 package model;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Cliente {
@@ -9,7 +11,11 @@ public class Cliente {
 	private String email;
 	private double limiteCredito;
 	private Date dataNascimento;
-	
+
+	public Cliente() {
+
+	};
+
 	public Cliente(String cpf, String nome, String email, double limiteCredito, Date dataNascimento) {
 		super();
 		this.cpf = cpf;
@@ -54,9 +60,21 @@ public class Cliente {
 	public Date getDataNascimento() {
 		return dataNascimento;
 	}
+	
 
 	public void setDataNascimento(Date dataNascimento) {
 		this.dataNascimento = dataNascimento;
 	}
-	
+
+	public void setDataNascimento(String dataNascimento) throws ParseException {
+		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+		this.dataNascimento = formatter.parse(dataNascimento);
+	}
+
+	@Override
+	public String toString() {
+		return "Cliente [cpf=" + cpf + ", nome=" + nome + ", email=" + email + ", limiteCredito=" + limiteCredito
+				+ ", dataNascimento=" + dataNascimento + "]";
+	}
+
 }
