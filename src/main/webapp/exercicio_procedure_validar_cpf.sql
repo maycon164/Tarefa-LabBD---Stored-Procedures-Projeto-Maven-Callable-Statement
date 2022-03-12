@@ -9,9 +9,51 @@ CREATE TABLE cliente(
 	dt_nascimento date
 )
 
-SELECT * FROM cliente;
+---------- PROCEDERE PARA UM REGISTRO
+CREATE PROCEDURE sp_select_one(
+	@cpf VARCHAR(11)
+)
+AS
+BEGIN 
+	SELECT * FROM Cliente WHERE cpf = @cpf;
+	RETURN;
+END
 
-EXEC sp_columns cliente;
+---------PROCEDURE PARA PEGAR TODOS OS REGISTROS
+CREATE PROCEDURE sp_select_all
+AS
+BEGIN 
+	SELECT * FROM Cliente;
+	RETURN;
+END
+
+--------PROCEDURE PARA DELETAR REGISTRO
+DROP PROCEDURE sp_delete_cliente
+
+CREATE PROCEDURE sp_delete_cliente(
+	@cpf VARCHAR(11)
+)
+AS
+BEGIN 
+	DELETE FROM cliente WHERE cpf = @cpf
+END
+
+------ PROCEDURE PARA ATUALIZAR REGISTRO
+CREATE PROCEDURE sp_update_cliente(
+	@cpf VARCHAR(11),
+	@nome varchar(100),
+	@email varchar(100),
+	@limite_credito  decimal(7,2),
+	@dt_nascimento date
+)
+AS
+	DECLARE @aux INT;
+BEGIN 
+	UPDATE Cliente
+	SET nome = @nome, email = @email, limite_credito = @limite_credito, dt_nascimento = @dt_nascimento 
+	WHERE cpf = @cpf
+END
+
 
 -------PROCEDURE DE INSERT COM VALIDAÇÃO
 CREATE PROCEDURE sp_insert_cliente
@@ -38,13 +80,6 @@ AS
 
 DROP PROCEDURE  sp_insert_cliente
 	
-EXEC sp_insert_cliente 
-@cpf = '93388447063', @nome='TESTE2', @email='teste2@gmail.com', @limite_credito=10.2, @dt_nascimento = '2002-11-21';
-
-
-SELECT * FROM cliente;
-
-----EXEMPLO ISPERA!!!!!
 
 ----- PROCEDURE QUE VERIFICA SE OS DIGITOS SÃO IGUAIS
 CREATE PROCEDURE numerosIguais
@@ -60,8 +95,6 @@ BEGIN
 SET @aux = SUBSTRING(@numero, @posicao, 1)
 WHILE(@posicao < LEN(@numero))
 	BEGIN		
-		
-		----PRINT CONCAT(@aux, ' comparando com o valor ',  SUBSTRING(@numero, (@posicao + 1), 1))
 		IF @aux != SUBSTRING(@numero, (@posicao + 1), 1)
 			BEGIN
 				SET @value = 0
@@ -74,8 +107,6 @@ WHILE(@posicao < LEN(@numero))
 	END
 	RETURN @value	
 END	
-
-DROP PROCEDURE numerosIguais;
 	
 ------PROCEDURE QUE VALIDA DIGITOS DO CPF
 CREATE PROCEDURE cpfValido
@@ -96,8 +127,7 @@ BEGIN
 		
 	EXEC @primeiroDigito = doMagic  @numero= @numero, @multiplicadorDesc = 10, @quantidadeVezes=9
 	EXEC @segundoDigito = doMagic  @numero= @numero, @multiplicadorDesc = 11, @quantidadeVezes=10
-
-
+	
 	IF SUBSTRING(@numero, 10, 1) = CAST(@primeiroDigito AS varchar(1)) AND  SUBSTRING(@numero, 11, 1) = CAST(@segundoDigito AS varchar(1))
 		BEGIN
 				RETURN @value
@@ -107,9 +137,6 @@ BEGIN
 		RETURN @value
 END
 
-
-DROP PROCEDURE cpfValido 
-
 ------- magica para validar os digitos
 CREATE PROCEDURE doMagic(
  @numero AS varchar(11),
@@ -118,7 +145,6 @@ CREATE PROCEDURE doMagic(
 )
 AS
 BEGIN 
-	
 	DECLARE @soma int
 	SET @soma = 0
 	
@@ -131,8 +157,5 @@ BEGIN
 			SET @iterador = @iterador + 1
 			SET @multiplicadorDesc  = @multiplicadorDesc  - 1
 		END
-		
 	RETURN ((@soma * 10) % 11) 
 END
-
-DROP PROCEDURE doMagic;
