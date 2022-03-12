@@ -67,7 +67,15 @@ public class Cliente {
 	}
 
 	public void setDataNascimento(String dataNascimento) throws ParseException {
-		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+		
+		SimpleDateFormat formatter = null;
+		if(dataNascimento.contains("-")) {
+			formatter = new SimpleDateFormat("yyyy-MM-dd");
+		}else {
+			formatter = new SimpleDateFormat("dd/MM/yyyy");
+		}
+		
+		
 		this.dataNascimento = formatter.parse(dataNascimento);
 	}
 
