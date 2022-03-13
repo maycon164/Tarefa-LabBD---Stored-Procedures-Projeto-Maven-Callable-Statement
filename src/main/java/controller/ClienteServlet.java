@@ -28,7 +28,7 @@ public class ClienteServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		String action = request.getParameter("action");
-		System.out.println(action);
+
 		if (action.equalsIgnoreCase("listartodos")) {
 			List<Cliente> clientes;
 
@@ -41,7 +41,7 @@ public class ClienteServlet extends HttpServlet {
 				e.printStackTrace();
 			}
 		} else if (action.equalsIgnoreCase("pesquisa")) {
-			System.out.println("Olá Mundo!!!!");
+
 			try {
 				String cpf = request.getParameter("cpf");
 				Cliente cliente = cd.selectOne(cpf);
@@ -84,15 +84,13 @@ public class ClienteServlet extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		System.out.println("entrou no servlet");
 
-		String cpf = request.getParameter("cpf");
-		String nome = request.getParameter("nome");
-		String email = request.getParameter("email");
-		String limite = request.getParameter("limite");
-		String nascimento = request.getParameter("nascimento");
-		System.out.println(cpf);
 		try {
+			String cpf = request.getParameter("cpf");
+			String nome = request.getParameter("nome");
+			String email = request.getParameter("email");
+			String limite = request.getParameter("limite");
+			String nascimento = request.getParameter("nascimento");
 
 			Cliente cliente = new Cliente();
 
@@ -107,15 +105,19 @@ public class ClienteServlet extends HttpServlet {
 			} else {
 				cd.insert(cliente);
 			}
-			
+
 			RequestDispatcher rd = request.getRequestDispatcher("index.jsp");
 			request.setAttribute("cliente", cliente);
 			rd.forward(request, response);
 
-		} catch (ParseException | ClassNotFoundException | SQLException e) {
-			e.printStackTrace();
+		} catch (ParseException | ClassNotFoundException | SQLException | NumberFormatException e) {
+			RequestDispatcher rd = request.getRequestDispatcher("index.jsp");
+			request.setAttribute("erro", e.getMessage());
+			rd.forward(request, response);
 		}
 
 	}
+	
+
 
 }

@@ -8,12 +8,20 @@
 			<head>
 				<meta charset="UTF-8">
 				<title>Hello!!!</title>
+
+				<link rel="stylesheet" type="text/css" href="./css/style.css" media="screen" />
 			</head>
 
 			<body>
 
 				<section>
-					<div>
+					<c:if test="${not empty erro }">
+						<h1>
+							<c:out value="${erro}" />
+						</h1>
+					</c:if>
+
+					<div class="center">
 						<h2>CADASTRO DE CLIENTE</h2>
 						<form method="POST" action="cliente">
 
@@ -35,18 +43,18 @@
 					</div>
 				</section>
 
-				<section>
-					<h2>LISTA DOS CLIENTES</h2>
+				<section class="center sec-listar">
+					<h2 class="center-text">LISTA DOS CLIENTES</h2>
 					<br>
-					<h3>CAMPO DE PESQUISA</h3>
+					<h3 class="center-text">CAMPO DE PESQUISA</h3>
 
 					<div>
 						<input type="text" id="pesquisa">
-						<a href="#" id="btnPesquisar">Pesquisar</a>
+						<a href="#" id="btnPesquisar" class="btn">Pesquisar</a>
 					</div>
 
 					<br>
-					<a class="button" href="cliente?action=listartodos">Listar Todos</a>
+					<a class="btn" href="cliente?action=listartodos">Listar Todos</a>
 
 					<table border="1" class="center espacamento-top">
 						<thead>
@@ -77,9 +85,11 @@
 									<td>
 										<c:out value="${cliente.dataNascimento}" />
 									</td>
-									<td><a href="cliente?action=edit&cpf=<c:out value=" ${cliente.cpf}" />">Update</a>
+									<td><a class="btn" href="cliente?action=edit&cpf=<c:out value="
+											${cliente.cpf}" />">Update</a>
 									</td>
-									<td><a href="cliente?action=delete&cpf=<c:out value=" ${cliente.cpf}" />">Delete</a>
+									<td><a class="btn" href="cliente?action=delete&cpf=<c:out value="
+											${cliente.cpf}" />">Delete</a>
 									</td>
 
 								</tr>

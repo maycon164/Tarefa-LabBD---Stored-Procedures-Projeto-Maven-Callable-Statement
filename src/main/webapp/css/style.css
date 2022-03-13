@@ -1,0 +1,29 @@
+@charset "UTF-8";
+
+.center{
+	width: 300px;
+	margin: 0 auto;
+}
+.center-text{
+	text-align: center;
+}
+
+.sec-listar{
+	width: 500px;
+}
+
+.btn{
+	padding: 5px;
+	
+	text-decoration: none;
+	transition: 0.500ms;
+}
+
+.btn:hover{
+	background-color: steelblue;
+	color: white;
+}
+
+input{
+	margin: 5px;
+}
